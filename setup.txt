@@ -1,0 +1,48 @@
+Prerequisites:
+
+A new conda environment with the following packages installed (use the steps listed below):
+This set up is tested on a linux machine (Windows is not recommended).
+
+Step 1:
+
+conda create -n testenv python=3.9
+
+conda env list
+
+Step 2:
+
+conda activate testenv
+
+Step 3:
+
+pip install -r requirements.txt
+
+Step 4: 
+Open up port 8000 that will be used by clients to send requests using the command:
+
+sudo ufw allow 8000
+
+Step 5:
+
+Test the Flask app locally with the command - python app.py - executed in a 
+terminal
+
+Step 6:
+Test the gunicorn server locally with the command:
+
+gunicorn --bind 0.0.0.0:8000 --workers 4 --threads 2 app:maintenance_predictor_api
+
+Step 7: 
+Build a docker container with the command (v1 of the app maintenancepredictor):
+
+sudo docker build -t maintenancepredictor:1.0 .
+
+Step 8:
+Test the container locally using the command:
+
+sudo docker run -p 8000:8000 maintenancepredictor:1.0
+
+Step 9:
+Run the following command on a production server (following all the steps above):
+
+docker run -d -p 8000:8000 maintenancepredictor:1.0
